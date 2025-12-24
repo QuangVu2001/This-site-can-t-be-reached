@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Can't Be Reached</title>
+    <title>Connection Error System with Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Favicon -->
@@ -22,14 +22,6 @@
             background-color: #0f172a;
             color: #f8fafc;
             height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Top Section - Error Message */
-        .error-section {
-            flex: 0 0 50%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -38,6 +30,7 @@
             overflow: hidden;
         }
         
+        /* Animated Background */
         .background {
             position: absolute;
             top: 0;
@@ -48,67 +41,232 @@
             background: 
                 radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 80% 70%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
                 linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         }
         
-        .error-container {
-            max-width: 700px;
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(248, 113, 113, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 10% 60%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            animation: pulse 8s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Connection lines animation */
+        .connection-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.2), transparent);
+            height: 1px;
+            width: 200px;
+            animation: lineMove 10s linear infinite;
+        }
+        
+        .line:nth-child(1) {
+            top: 20%;
+            left: -200px;
+            animation-delay: 0s;
+        }
+        
+        .line:nth-child(2) {
+            top: 40%;
+            left: -200px;
+            animation-delay: 2s;
+            width: 250px;
+        }
+        
+        .line:nth-child(3) {
+            top: 60%;
+            left: -200px;
+            animation-delay: 4s;
+            width: 180px;
+        }
+        
+        .line:nth-child(4) {
+            top: 80%;
+            left: -200px;
+            animation-delay: 6s;
+            width: 300px;
+        }
+        
+        @keyframes lineMove {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 200px));
+                opacity: 0;
+            }
+        }
+        
+        /* Container chính */
+        .main-container {
+            max-width: 450px;
             width: 100%;
             background: rgba(30, 41, 59, 0.85);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
             padding: 40px;
-            text-align: center;
             position: relative;
+            overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
         }
         
-        .error-icon {
-            font-size: 80px;
-            color: #f87171;
+        .main-container.large {
+            max-width: 900px;
+            padding: 30px;
+        }
+        
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(239, 68, 68, 0.05));
+            z-index: -1;
+        }
+        
+        /* Header chung */
+        .form-header {
+            text-align: center;
             margin-bottom: 25px;
-            text-shadow: 0 10px 20px rgba(248, 113, 113, 0.3);
         }
         
-        h1 {
-            font-size: 36px;
+        .form-header i {
+            font-size: 60px;
+            color: #38bdf8;
             margin-bottom: 15px;
+            display: block;
+        }
+        
+        .form-header h1 {
+            font-size: 28px;
             color: #f8fafc;
-            font-weight: 800;
-            background: linear-gradient(90deg, #f87171, #fb923c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
         
-        .no-connection {
-            font-size: 22px;
+        .form-header p {
+            color: #94a3b8;
+            font-size: 15px;
+        }
+        
+        /* Form elements */
+        .form-container {
+            display: none;
+        }
+        
+        .form-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .input-group {
+            margin-bottom: 18px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
             color: #cbd5e1;
-            margin-bottom: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
         }
         
-        .no-connection i {
-            color: #fbbf24;
+        .input-with-icon {
+            position: relative;
         }
         
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            flex-wrap: wrap;
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 18px;
         }
         
-        button {
-            padding: 16px 32px;
+        .input-with-icon input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+        
+        .input-with-icon input:focus + i {
+            color: #38bdf8;
+        }
+        
+        .error-message {
+            color: #f87171;
+            font-size: 14px;
+            margin-top: 5px;
+            min-height: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: shake 0.3s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -116,59 +274,147 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            min-width: 180px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
         }
         
-        #reload-btn {
+        .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
         }
         
-        #reload-btn:hover {
+        .btn-primary:hover {
             background: linear-gradient(135deg, #2563eb, #1e40af);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
         }
         
-        #diagnose-btn {
+        .btn-secondary {
             background: rgba(30, 41, 59, 0.9);
             color: #e2e8f0;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        #diagnose-btn:hover {
+        .btn-secondary:hover {
             background: rgba(51, 65, 85, 0.9);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
         
-        /* Bottom Section - T-Rex Runner Game */
-        .game-section {
-            flex: 0 0 50%;
-            background-color: #1e293b;
+        /* Form footer */
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+        
+        .form-footer a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .form-footer a:hover {
+            color: #0ea5e9;
+            text-decoration: underline;
+        }
+        
+        /* Error page */
+        .error-page {
+            display: none;
+        }
+        
+        .error-page.active {
             display: flex;
             flex-direction: column;
+            animation: fadeIn 0.5s ease;
+            gap: 25px;
+        }
+        
+        .error-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .error-icon-large {
+            font-size: 70px;
+            color: #f87171;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .error-title {
+            font-size: 26px;
+            color: #f8fafc;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .error-subtitle {
+            font-size: 18px;
+            color: #cbd5e1;
+            display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .error-actions .btn {
+            margin-top: 0;
+            padding: 12px 20px;
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Game Section */
+        .game-section {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
             padding: 20px;
-            border-top: 3px solid #0f172a;
-            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 10px;
         }
         
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            max-width: 800px;
             margin-bottom: 15px;
-            padding: 0 10px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .game-title {
-            font-size: 24px;
+            font-size: 20px;
             color: #38bdf8;
             display: flex;
             align-items: center;
@@ -181,24 +427,25 @@
         
         .game-controls {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 15px;
         }
         
         .score-container {
-            background: rgba(15, 23, 42, 0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
+            background: rgba(30, 41, 59, 0.9);
+            padding: 8px 15px;
+            border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
         
         .score-label {
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
         }
         
         .score-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: #10b981;
             text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
@@ -207,12 +454,15 @@
         #start-btn {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         #start-btn:hover {
@@ -222,14 +472,13 @@
         
         .game-container {
             width: 100%;
-            max-width: 800px;
-            height: 280px;
+            height: 200px;
             background-color: #0f172a;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
-            border: 3px solid rgba(56, 189, 248, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 15px;
         }
         
         #game-canvas {
@@ -239,16 +488,16 @@
         }
         
         .game-instructions {
-            margin-top: 15px;
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
-            max-width: 800px;
         }
         
         .controls-info {
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 10px;
         }
         
@@ -256,128 +505,296 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            font-size: 12px;
         }
         
         .key {
             display: inline-block;
             background: rgba(30, 41, 59, 0.9);
             color: #e2e8f0;
-            padding: 3px 10px;
+            padding: 3px 8px;
             border-radius: 5px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             font-family: monospace;
+            font-size: 11px;
+        }
+        
+        /* Account info */
+        .account-info {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+        
+        .account-info p {
+            margin: 5px 0;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        
+        .account-info strong {
+            color: #38bdf8;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            color: #f8fafc;
+            padding: 15px 25px;
+            border-radius: 12px;
+            border-left: 4px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            border-left-color: #f87171;
+        }
+        
+        .notification.success {
+            border-left-color: #10b981;
+        }
+        
+        /* Responsive */
+        @media (max-width: 950px) {
+            .main-container.large {
+                max-width: 95%;
+            }
         }
         
         @media (max-width: 768px) {
-            .error-container {
+            .main-container {
                 padding: 30px 20px;
             }
             
-            h1 {
-                font-size: 28px;
+            .main-container.large {
+                padding: 25px 15px;
             }
             
-            .error-icon {
-                font-size: 60px;
+            .form-header h1 {
+                font-size: 24px;
             }
             
-            .no-connection {
-                font-size: 20px;
+            .error-title {
+                font-size: 22px;
             }
             
-            button {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .actions {
+            .error-actions {
                 flex-direction: column;
             }
             
             .game-header {
                 flex-direction: column;
-                gap: 15px;
+                align-items: center;
                 text-align: center;
             }
             
             .controls-info {
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
             }
             
             .game-container {
-                height: 220px;
+                height: 180px;
             }
         }
         
-        @media (max-height: 700px) {
+        @media (max-width: 480px) {
             .game-container {
-                height: 200px;
+                height: 150px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Top Section: Error Message -->
-    <div class="error-section">
-        <div class="background"></div>
-        
-        <div class="error-container">
-            <div class="error-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            
-            <h1>This site can't be reached</h1>
-            
-            <div class="no-connection">
-                <i class="fas fa-plug"></i> No connection
-            </div>
-            
-            <div class="actions">
-                <button id="reload-btn">
-                    <i class="fas fa-redo"></i> Reload
-                </button>
-                <button id="diagnose-btn">
-                    <i class="fas fa-search"></i> Run Diagnostics
-                </button>
-            </div>
-        </div>
+    <div class="background"></div>
+    
+    <div class="connection-lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
     </div>
     
-    <!-- Bottom Section: T-Rex Runner Game -->
-    <div class="game-section">
-        <div class="game-header">
-            <div class="game-title">
-                <i class="fas fa-gamepad"></i> T-Rex Runner Game
+    <div class="main-container" id="main-container">
+        <!-- Login Form -->
+        <div class="form-container active" id="login-form">
+            <div class="form-header">
+                <i class="fas fa-sign-in-alt"></i>
+                <h1>Khu tự trị A ÉT CÊ</h1>
+                <p>Đăng nhập vào tài khoản của bạn</p>
             </div>
             
-            <div class="game-controls">
-                <div class="score-container">
-                    <div class="score-label">SCORE</div>
-                    <div class="score-value" id="score">0</div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="loginUsername">Tên đăng nhập</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="loginUsername" placeholder="Nhập tên đăng nhập" required>
+                    </div>
+                    <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 
-                <button id="start-btn">
-                    <i class="fas fa-play"></i> Start Game
+                <div class="input-group">
+                    <label for="loginPassword">Mật khẩu</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                    </div>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Đăng Nhập
                 </button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Chưa có tài khoản? <a href="#" id="showRegister">Đăng ký</a></p>
             </div>
         </div>
         
-        <div class="game-container">
-            <canvas id="game-canvas"></canvas>
+        <!-- Register Form -->
+        <div class="form-container" id="register-form">
+            <div class="form-header">
+                <i class="fas fa-user-plus"></i>
+                <h1>Tạo Tài Khoản</h1>
+                <p>Tham gia cùng chúng tôi</p>
+            </div>
+            
+            <form id="registerForm">
+                <div class="input-group">
+                    <label for="registerUsername">Tên đăng nhập</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="registerUsername" placeholder="Chọn tên đăng nhập" required>
+                    </div>
+                    <div class="error-message" id="registerUsernameError"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="registerEmail">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="registerEmail" placeholder="Nhập email của bạn" required>
+                    </div>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="registerPassword">Mật khẩu</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerPassword" placeholder="Tạo mật khẩu" required>
+                    </div>
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="registerConfirmPassword">Xác nhận mật khẩu</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerConfirmPassword" placeholder="Xác nhận mật khẩu" required>
+                    </div>
+                    <div class="error-message" id="registerConfirmPasswordError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Tạo Tài Khoản
+                </button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Đã có tài khoản? <a href="#" id="showLogin">Đăng nhập</a></p>
+            </div>
         </div>
         
-        <div class="game-instructions">
-            <p>Jump over the cacti and birds to score points. The game speeds up as your score increases!</p>
-            <div class="controls-info">
-                <div class="control-item">
-                    <span class="key">SPACE</span> or <span class="key">UP ARROW</span> - Jump
+        <!-- Error Page with Game -->
+        <div class="error-page" id="error-page">
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+            </button>
+            
+            <div class="error-header">
+                <div class="error-icon-large">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <div class="control-item">
-                    <span class="key">DOWN ARROW</span> - Duck
+                
+                <h1 class="error-title">Không thể truy cập trang web</h1>
+                
+                <p class="error-subtitle">
+                    <i class="fas fa-plug"></i> Không có kết nối
+                </p>
+                
+                <div class="error-actions">
+                    <button class="btn btn-primary" id="reloadBtn">
+                        <i class="fas fa-redo"></i> Tải Lại
+                    </button>
+                    <button class="btn btn-secondary" id="diagnoseBtn">
+                        <i class="fas fa-search"></i> Chẩn Đoán
+                    </button>
                 </div>
-                <div class="control-item">
-                    <span class="key">R</span> - Restart Game
+            </div>
+            
+            <div class="account-info" id="accountInfo">
+                <!-- Account info will be displayed here -->
+            </div>
+            
+            <div class="game-section">
+                <div class="game-header">
+                    <div class="game-title">
+                        <i class="fas fa-gamepad"></i> Trò Chơi T-Rex Runner
+                    </div>
+                    
+                    <div class="game-controls">
+                        <div class="score-container">
+                            <div class="score-label">ĐIỂM</div>
+                            <div class="score-value" id="score">0</div>
+                        </div>
+                        
+                        <button id="start-btn">
+                            <i class="fas fa-play"></i> Bắt Đầu
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="game-container">
+                    <canvas id="game-canvas"></canvas>
+                </div>
+                
+                <div class="game-instructions">
+                    <p>Nhảy qua xương rồng và chim để ghi điểm! Tốc độ sẽ tăng khi điểm của bạn tăng!</p>
+                    <div class="controls-info">
+                        <div class="control-item">
+                            <span class="key">SPACE</span> hoặc <span class="key">MŨI TÊN LÊN</span> - Nhảy
+                        </div>
+                        <div class="control-item">
+                            <span class="key">MŨI TÊN XUỐNG</span> - Cúi
+                        </div>
+                        <div class="control-item">
+                            <span class="key">R</span> - Chơi Lại
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -691,12 +1108,12 @@
             ctx.fillStyle = '#e2e8f0';
             ctx.font = '20px monospace';
             ctx.textAlign = 'left';
-            ctx.fillText(`SCORE: ${score}`, 20, 30);
+            ctx.fillText(`ĐIỂM: ${score}`, 20, 30);
             
             if (highScore > 0) {
                 ctx.fillStyle = '#fbbf24';
                 ctx.font = '16px monospace';
-                ctx.fillText(`HIGH: ${highScore}`, 20, 55);
+                ctx.fillText(`CAO NHẤT: ${highScore}`, 20, 55);
             }
         }
         
@@ -715,18 +1132,18 @@
             // Score text
             ctx.fillStyle = '#e2e8f0';
             ctx.font = '24px monospace';
-            ctx.fillText(`Score: ${score}`, canvas.width/2, canvas.height/2 + 10);
+            ctx.fillText(`Điểm: ${score}`, canvas.width/2, canvas.height/2 + 10);
             
             // High score text
             if (highScore > 0) {
                 ctx.fillStyle = '#fbbf24';
-                ctx.fillText(`High Score: ${highScore}`, canvas.width/2, canvas.height/2 + 40);
+                ctx.fillText(`Điểm cao nhất: ${highScore}`, canvas.width/2, canvas.height/2 + 40);
             }
             
             // Restart instruction
             ctx.fillStyle = '#94a3b8';
             ctx.font = '18px monospace';
-            ctx.fillText('Press R to restart', canvas.width/2, canvas.height/2 + 80);
+            ctx.fillText('Nhấn R để chơi lại', canvas.width/2, canvas.height/2 + 80);
         }
         
         // Jump function
@@ -746,37 +1163,286 @@
             obstacles = [];
             
             document.getElementById('score').textContent = score;
-            document.getElementById('start-btn').innerHTML = '<i class="fas fa-redo"></i> Restart Game';
+            document.getElementById('start-btn').innerHTML = '<i class="fas fa-redo"></i> Chơi Lại';
         }
         
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize game
-            initGame();
+        // User authentication system
+        // Khởi tạo dữ liệu người dùng nếu chưa có
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([]));
+        }
+        
+        // Lấy người dùng hiện tại từ session storage
+        let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        
+        // DOM Elements
+        const loginFormEl = document.getElementById('login-form');
+        const registerFormEl = document.getElementById('register-form');
+        const errorPageEl = document.getElementById('error-page');
+        const mainContainerEl = document.getElementById('main-container');
+        
+        const showRegisterLink = document.getElementById('showRegister');
+        const showLoginLink = document.getElementById('showLogin');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        const accountInfoEl = document.getElementById('accountInfo');
+        
+        // Kiểm tra nếu đã đăng nhập, hiển thị trang lỗi
+        if (currentUser) {
+            showErrorPage();
+            displayAccountInfo();
+        } else {
+            showLoginForm();
+        }
+        
+        // Hiển thị form đăng nhập
+        function showLoginForm() {
+            loginFormEl.classList.add('active');
+            registerFormEl.classList.remove('active');
+            errorPageEl.classList.remove('active');
+            mainContainerEl.classList.remove('large');
+            mainContainerEl.style.maxWidth = '450px';
+        }
+        
+        // Hiển thị form đăng ký
+        function showRegisterForm() {
+            loginFormEl.classList.remove('active');
+            registerFormEl.classList.add('active');
+            errorPageEl.classList.remove('active');
+            mainContainerEl.classList.remove('large');
+            mainContainerEl.style.maxWidth = '450px';
+        }
+        
+        // Hiển thị trang lỗi
+        function showErrorPage() {
+            loginFormEl.classList.remove('active');
+            registerFormEl.classList.remove('active');
+            errorPageEl.classList.add('active');
+            mainContainerEl.classList.add('large');
+            mainContainerEl.style.maxWidth = '900px';
             
+            // Initialize game when error page is shown
+            setTimeout(() => {
+                initGame();
+            }, 100);
+        }
+        
+        // Hiển thị thông tin tài khoản
+        function displayAccountInfo() {
+            if (currentUser) {
+                accountInfoEl.innerHTML = `
+                    <p>Đang đăng nhập: <strong>${currentUser.username}</strong></p>
+                    <p>Email: <strong>${currentUser.email}</strong></p>
+                    <p>Tài khoản tạo: <strong>${new Date(currentUser.createdAt).toLocaleDateString('vi-VN')}</strong></p>
+                `;
+            }
+        }
+        
+        // Hiển thị thông báo
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Hiển thị thông báo
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Ẩn thông báo sau 4 giây
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 4000);
+        }
+        
+        // Xử lý đăng nhập
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // Xóa thông báo lỗi cũ
+            document.getElementById('loginUsernameError').classList.remove('show');
+            document.getElementById('loginPasswordError').classList.remove('show');
+            
+            // Kiểm tra thông tin đăng nhập
+            const users = JSON.parse(localStorage.getItem('users'));
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Lưu thông tin người dùng vào session storage
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                currentUser = user;
+                
+                // Hiển thị trang lỗi
+                showErrorPage();
+                displayAccountInfo();
+                showNotification('Đăng nhập thành công! Chào mừng trở lại.', 'success');
+                
+                // Reset form
+                loginForm.reset();
+            } else {
+                // Hiển thị lỗi
+                document.getElementById('loginPasswordError').textContent = 'Tên đăng nhập hoặc mật khẩu không đúng';
+                document.getElementById('loginPasswordError').classList.add('show');
+                showNotification('Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập.', 'error');
+            }
+        });
+        
+        // Xử lý đăng ký
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // Xóa thông báo lỗi cũ
+            const errorElements = [
+                'registerUsernameError',
+                'registerEmailError',
+                'registerPasswordError',
+                'registerConfirmPasswordError'
+            ];
+            
+            errorElements.forEach(id => {
+                document.getElementById(id).classList.remove('show');
+            });
+            
+            let isValid = true;
+            
+            // Kiểm tra username
+            if (username.length < 3) {
+                document.getElementById('registerUsernameError').textContent = 'Tên đăng nhập phải có ít nhất 3 ký tự';
+                document.getElementById('registerUsernameError').classList.add('show');
+                isValid = false;
+            }
+            
+            // Kiểm tra email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('registerEmailError').textContent = 'Vui lòng nhập địa chỉ email hợp lệ';
+                document.getElementById('registerEmailError').classList.add('show');
+                isValid = false;
+            }
+            
+            // Kiểm tra password
+            if (password.length < 6) {
+                document.getElementById('registerPasswordError').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+                document.getElementById('registerPasswordError').classList.add('show');
+                isValid = false;
+            }
+            
+            // Kiểm tra confirm password
+            if (password !== confirmPassword) {
+                document.getElementById('registerConfirmPasswordError').textContent = 'Mật khẩu không khớp';
+                document.getElementById('registerConfirmPasswordError').classList.add('show');
+                isValid = false;
+            }
+            
+            // Kiểm tra username đã tồn tại chưa
+            const users = JSON.parse(localStorage.getItem('users'));
+            const existingUser = users.find(u => u.username === username);
+            
+            if (existingUser) {
+                document.getElementById('registerUsernameError').textContent = 'Tên đăng nhập đã tồn tại';
+                document.getElementById('registerUsernameError').classList.add('show');
+                isValid = false;
+            }
+            
+            // Kiểm tra email đã tồn tại chưa
+            const existingEmail = users.find(u => u.email === email);
+            
+            if (existingEmail) {
+                document.getElementById('registerEmailError').textContent = 'Email đã được đăng ký';
+                document.getElementById('registerEmailError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Tạo tài khoản mới
+                const newUser = {
+                    username,
+                    email,
+                    password,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Lưu vào localStorage
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Hiển thị thông báo thành công
+                showNotification('Tạo tài khoản thành công! Bạn có thể đăng nhập ngay bây giờ.', 'success');
+                
+                // Reset form
+                registerForm.reset();
+                
+                // Chuyển về trang đăng nhập
+                showLoginForm();
+            } else {
+                showNotification('Vui lòng sửa các lỗi trong biểu mẫu.', 'error');
+            }
+        });
+        
+        // Xử lý nút reload
+        document.getElementById('reloadBtn').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải lại...';
+            this.disabled = true;
+            
+            // Giả lập reload
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-redo"></i> Tải Lại';
+                this.disabled = false;
+                showNotification('Không thể tải lại trang. Vui lòng kiểm tra kết nối internet của bạn.', 'error');
+            }, 1500);
+        });
+        
+        // Xử lý nút diagnostics
+        document.getElementById('diagnoseBtn').addEventListener('click', function() {
+            showNotification('Chẩn đoán hoàn tất. Phát hiện sự cố với kết nối mạng.', 'info');
+        });
+        
+        // Xử lý logout
+        logoutBtn.addEventListener('click', function() {
+            // Xóa thông tin người dùng khỏi session storage
+            sessionStorage.removeItem('currentUser');
+            currentUser = null;
+            
+            // Hiển thị form đăng nhập
+            showLoginForm();
+            
+            // Hiển thị thông báo
+            showNotification('Bạn đã đăng xuất thành công.', 'success');
+        });
+        
+        // Chuyển đổi giữa các form
+        showRegisterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRegisterForm();
+        });
+        
+        showLoginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoginForm();
+        });
+        
+        // Game event listeners
+        document.addEventListener('DOMContentLoaded', function() {
             // Start game button
             document.getElementById('start-btn').addEventListener('click', startGame);
-            
-            // Reload button
-            document.getElementById('reload-btn').addEventListener('click', function() {
-                // Show loading state
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reloading...';
-                this.disabled = true;
-                
-                // Simulate reload attempt
-                setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-redo"></i> Reload';
-                    this.disabled = false;
-                    
-                    // Show notification
-                    showNotification('Unable to reload the page. Please check your internet connection.');
-                }, 1500);
-            });
-            
-            // Diagnostics button
-            document.getElementById('diagnose-btn').addEventListener('click', function() {
-                showNotification('Diagnostics complete. Issues detected with network connection.');
-            });
             
             // Game controls
             document.addEventListener('keydown', function(e) {
@@ -798,7 +1464,7 @@
             });
             
             // Touch controls for mobile
-            canvas.addEventListener('click', function() {
+            canvas?.addEventListener('click', function() {
                 if (!gameOver && gameRunning) {
                     jump();
                 } else if (!gameRunning) {
@@ -808,57 +1474,42 @@
             
             // Window resize handler
             window.addEventListener('resize', function() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                dino.y = canvas.height - dino.height - 20;
+                if (canvas) {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                    dino.y = canvas.height - dino.height - 20;
+                }
             });
         });
         
-        // Notification function
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                left: 50%;
-                transform: translateX(-50%) translateY(100px);
-                background: rgba(30, 41, 59, 0.95);
-                color: #f8fafc;
-                padding: 15px 25px;
-                border-radius: 12px;
-                border-left: 4px solid #f87171;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                z-index: 1000;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                opacity: 0;
-                transition: all 0.5s ease;
-            `;
+        // Demo accounts (tự động thêm nếu chưa có)
+        window.addEventListener('load', function() {
+            const users = JSON.parse(localStorage.getItem('users'));
             
-            document.body.appendChild(notification);
+            // Kiểm tra xem đã có tài khoản demo chưa
+            const demoAccounts = [
+                { username: 'demo', email: 'demo@example.com', password: 'demo123' },
+                { username: 'admin', email: 'admin@example.com', password: 'admin123' }
+            ];
             
-            // Animate in
-            setTimeout(() => {
-                notification.style.transform = 'translateX(-50%) translateY(0)';
-                notification.style.opacity = '1';
-            }, 10);
+            let addedDemo = false;
             
-            // Remove after 4 seconds
-            setTimeout(() => {
-                notification.style.transform = 'translateX(-50%) translateY(100px)';
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 500);
-            }, 4000);
-        }
+            demoAccounts.forEach(demoAccount => {
+                const existingUser = users.find(u => u.username === demoAccount.username);
+                
+                if (!existingUser) {
+                    users.push({
+                        ...demoAccount,
+                        createdAt: new Date().toISOString()
+                    });
+                    addedDemo = true;
+                }
+            });
+            
+            if (addedDemo) {
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        });
     </script>
 </body>
 </html>
